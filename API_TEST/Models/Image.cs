@@ -2,8 +2,10 @@
 {
     public class Image
     {
-        public int ID { get; set; }
-        public byte ImageData { get; set; }
-        public ImageDetails ImageDetails { get; set; }
+        public string id { get; set; }
+        public string ImageUrl { get; set; }
+        public string Landmarksid  { get; set; }
+        public Landmarks Landmark { get; set; }
+
     }
 }
