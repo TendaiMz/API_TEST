@@ -22,32 +22,10 @@ namespace API_TEST.Controllers
 
 
         // GET: api/Location
+        [HttpGet]
         [Route("{query}/{location}")]
         public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(string query, string location)
         {
-            //if ("checkConnectionAvailability")
-            //{
-
-
-
-            //   url = "https://api.foursquare.com/v2/venues/search?client_id=PA5XAJ5OIVE2SNM2X412HMQ33L34RKQYRBHUE54RPY122QQD&client_secret=MJJBCXJYPIN3FKGJRHTI0WTAONRESFEUH3Y24F2GWX30QNAA&v=20130815&near=Victoria%20Falls%20&query=bridge";
-            // url = string.Format(url + "&near={2}&query={3}", FourSqaureID, FourSqaureSecret, location, query);
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    var stream = await client.GetStreamAsync(url);                         
-            //    DataContractJsonSerializer serialiser = new DataContractJsonSerializer(typeof(RootObject));
-            //    RootObject rootResponse = (RootObject)serialiser.ReadObject(stream);
-            //    await SaveLocationAsync(rootResponse.response.venues);
-            //    foreach (var venue in rootResponse.response.venues)
-            //    {
-            //        PhotoCollection photos = await AcquirePhotosAsyc(venue.id);
-            //        await SavePhotosAsync(photos, venue.id);
-            //    }
-
-            //    return rootResponse.response.venues;
-            //}
-
-            //url = "https://api.foursquare.com/v2/venues/search?client_id=PA5XAJ5OIVE2SNM2X412HMQ33L34RKQYRBHUE54RPY122QQD&client_secret=MJJBCXJYPIN3FKGJRHTI0WTAONRESFEUH3Y24F2GWX30QNAA&v=20130815&near=Victoria%20Falls%20&query=bridge";
 
             url = string.Format(url + "&near={2}&query={3}", FourSqaureID, FourSqaureSecret, location, query);
 
@@ -62,7 +40,7 @@ namespace API_TEST.Controllers
             return locationSearchResult;
 
         }
-
+        [HttpGet]
         [Route("{query}/{lat:float}/{lon:float}")]
         public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(string query, float lat, float lon)
         {
@@ -76,29 +54,29 @@ namespace API_TEST.Controllers
             }
 
             return locationSearchResult;
-                     
-           
-        }
 
+
+        }
+        [HttpGet]
         [Route("Photos/{id}")]
         public async Task<List<string>> GetPhotos(string id)
         {
             var photos = await AcquirePhotosAsyc(id);
-            return photos.Select(s =>s.MediumUrl).ToList();
+            return photos.Select(s => s.MediumUrl).ToList();
 
         }
-
+        [HttpGet]
         [Route("PhotoInfo/{id}")]
         public PhotoInfo GetPhotoInfo(string id)
         {
-            
+
             Flickr flickr = new Flickr(FlickerKey, FlickerSecret);
             return flickr.PhotosGetInfo(id);
 
-           
+
         }
 
-        async  Task SaveLocationAsync(IEnumerable<ViewModel.FourSquare.Venue> theLocations)
+        async Task SaveLocationAsync(IEnumerable<ViewModel.FourSquare.Venue> theLocations)
         {
             if (theLocations.Any())
             {
@@ -124,9 +102,9 @@ namespace API_TEST.Controllers
 
                 }
             }
-           
+
         }
-        async Task SavePhotosAsync(PhotoCollection photos,string venueID)
+        async Task SavePhotosAsync(PhotoCollection photos, string venueID)
         {
             if (photos.Any())
             {
@@ -151,10 +129,10 @@ namespace API_TEST.Controllers
 
                 }
             }
-           
+
         }
 
-        async Task<List<ViewModel.FourSquare.Venue>> AcquireLocationsAsyc( string url)
+        async Task<List<ViewModel.FourSquare.Venue>> AcquireLocationsAsyc(string url)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -165,13 +143,13 @@ namespace API_TEST.Controllers
             }
         }
 
-         async Task<PhotoCollection> AcquirePhotosAsyc(string id)
-        {    
+        async Task<PhotoCollection> AcquirePhotosAsyc(string id)
+        {
 
             Flickr flickr = new Flickr(FlickerKey, FlickerSecret);
             PhotoSearchOptions pSearchOptions = new PhotoSearchOptions();
             pSearchOptions.FoursquareVenueID = id;
-            pSearchOptions.MediaType = MediaType.Photos;           
+            pSearchOptions.MediaType = MediaType.Photos;
 
             flickr.PhotosSearch(pSearchOptions);
             var flickerPhotos = await Task.Run(() => flickr.PhotosSearch(pSearchOptions));
@@ -179,8 +157,8 @@ namespace API_TEST.Controllers
             return flickerPhotos;
         }
 
-     
-     
+
+
 
     }
 }
