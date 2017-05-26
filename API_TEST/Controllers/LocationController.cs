@@ -3,6 +3,7 @@ using FlickrNet;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using static API_TEST.ViewModel.FourSquare;
 
 namespace API_TEST.Controllers
 {
+
     [RoutePrefix("api/Location")]
     public class LocationController : ApiController
     {
@@ -21,13 +23,13 @@ namespace API_TEST.Controllers
         string url = "https://api.foursquare.com/v2/venues/search?client_id={0}&client_secret={1}&v=20130815";
 
 
-        // GET: api/Location
+
         [HttpGet]
-        [Route("{query}/{location}")]
-        public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(string query, string location)
+        [Route("{place}/{query}")]
+        public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(string place, string query)
         {
 
-            url = string.Format(url + "&near={2}&query={3}", FourSqaureID, FourSqaureSecret, location, query);
+            url = string.Format(url + "&near={2}&query={3}", FourSqaureID, FourSqaureSecret, place, query);
 
             var locationSearchResult = await AcquireLocationsAsyc(url);
             await SaveLocationAsync(locationSearchResult);
@@ -37,12 +39,47 @@ namespace API_TEST.Controllers
                 await SavePhotosAsync(photos, venue.id);
             }
 
+            if (locationSearchResult.Count == 0)
+            {
+                NoLocationFound();
+            }
             return locationSearchResult;
 
         }
+
+
+        public void NoLocationFound()
+        {
+
+            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("There is no location for this query")),
+                ReasonPhrase = "Location Not Found"
+            };
+
+            throw new HttpResponseException(response);
+
+        }
+
+
+        public void NoImagesFound(string id)
+        {
+
+            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("There are no images for location with id:{0}", id)),
+                ReasonPhrase = "Image Not Found"
+            };
+
+            throw new HttpResponseException(response);
+
+        }
+
+
+
         [HttpGet]
-        [Route("{query}/{lat:float}/{lon:float}")]
-        public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(string query, float lat, float lon)
+        [Route("{lat:float}/{lon:float}/{query}")]
+        public async Task<IEnumerable<ViewModel.FourSquare.Venue>> Get(float lat, float lon, string query)
         {
             url = string.Format(url + "&ll={2},{3}&query={4}", FourSqaureID, FourSqaureSecret, lat, lon, query);
             var locationSearchResult = await AcquireLocationsAsyc(url);
@@ -62,6 +99,10 @@ namespace API_TEST.Controllers
         public async Task<List<string>> GetPhotos(string id)
         {
             var photos = await AcquirePhotosAsyc(id);
+            if (photos.Count == 0)
+            {
+                NoImagesFound(id);
+            }
             return photos.Select(s => s.MediumUrl).ToList();
 
         }
