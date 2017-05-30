@@ -48,34 +48,6 @@ namespace API_TEST.Controllers
         }
 
 
-        public void NoLocationFound()
-        {
-
-            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
-            {
-                Content = new StringContent(string.Format("There is no location for this query")),
-                ReasonPhrase = "Location Not Found"
-            };
-
-            throw new HttpResponseException(response);
-
-        }
-
-
-        public void NoImagesFound(string id)
-        {
-
-            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
-            {
-                Content = new StringContent(string.Format("There are no images for location with id:{0}", id)),
-                ReasonPhrase = "Image Not Found"
-            };
-
-            throw new HttpResponseException(response);
-
-        }
-
-
 
         [HttpGet]
         [Route("{lat:float}/{lon:float}/{query}")]
@@ -202,7 +174,32 @@ namespace API_TEST.Controllers
             return flickerPhotos;
         }
 
+        public void NoLocationFound()
+        {
 
+            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("There is no location for this query")),
+                ReasonPhrase = "Location Not Found"
+            };
+
+            throw new HttpResponseException(response);
+
+        }
+
+
+        public void NoImagesFound(string id)
+        {
+
+            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("There are no images for location with id:{0}", id)),
+                ReasonPhrase = "Image Not Found"
+            };
+
+            throw new HttpResponseException(response);
+
+        }
 
 
     }
