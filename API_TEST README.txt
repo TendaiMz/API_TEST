@@ -1,0 +1,22 @@
+TO SETUP AND RUN THE API PERFOM THE FOLLOWING STEPS
+
+1.Extract the appliction API_TEST.zip
+2.Open the solution in Visual Studio
+3.Run the solution
+4.Use an application such as Postman or any browser of your choice to send GET requests to the API
+
+To get the landmarks around a location using the name use:	
+	http://localhost:32122/api/Location/"Put the name of the location here"/"Put the landform here"
+	e.g http://localhost:32122/api/Location/harare/bridge - this will return all the bridges around harare
+
+To get the landmarks around a location using the coordinates use:
+	http://localhost:32122/api/Location/"Put the latitude value here"/"Put the longitude value"/"Put the landform here"	
+	eg http://localhost:32122/api/Location/-29.746736192640039/30.975126028060913/bridge - this will show all the bridges around the location with the latitude(-29.746736192640039) and longitude(30.975126028060913)  
+
+To get the images for a landmark use:
+	http://localhost:32122/api/Location/Photos/"Put the landmark id here"
+	http://localhost:32122/api/Location/Photos/5216715193cd17bcf1ccbc1c - this will show the image for the location with the id 4cdab4b54006a143447ad3b2
+
+To get the image information use :    
+	http://localhost:32122/api/Location/PhotoInfo/"Put the image id here"
+	http://localhost:32122/api/Location/PhotoInfo/21745481095 - this will show the information for the photo with the id 21745481095

@@ -89,6 +89,10 @@ namespace API_TEST.Controllers
                 PhotoCollection photos = await AcquirePhotosAsyc(venue.id);
                 await SavePhotosAsync(photos, venue.id);
             }
+            if (locationSearchResult.Count == 0)
+            {
+                NoLocationFound();
+            }
 
             return locationSearchResult;
 

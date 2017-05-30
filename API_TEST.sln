@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_TEST", "API_TEST\API_TEST.csproj", "{46E597D7-0961-4B77-8B43-504298C00FFE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HOW TO SET UP AND RUN THE APP", "HOW TO SET UP AND RUN THE APP", "{3D410000-DF7D-4909-BAA8-D57D2B98AED1}"
+	ProjectSection(SolutionItems) = preProject
+		API_TEST README.txt = API_TEST README.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
